@@ -7,7 +7,7 @@ import com.example.api.dtos.responceDtos.ResStudentDto;
 import com.example.api.model.StudentModel;
 
 
-public interface ServiceInerface {
+public interface ServiceInterface {
 
     void addStudents(ReqStudentDto dto);
 

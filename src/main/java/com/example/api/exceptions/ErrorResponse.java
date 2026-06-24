@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 
 
-public class ErrorResponce {
+public class ErrorResponse {
     private LocalDateTime timeStamp;
     private int status;
     private String message;

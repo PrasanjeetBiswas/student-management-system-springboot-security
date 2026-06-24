@@ -3,6 +3,7 @@ package com.example.api.model;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,9 +60,15 @@ private String batch;
 
 @CreationTimestamp
 @Column(name = "admission_date")
-private LocalDate date;
+private LocalDate createDate;
+
+// @UpdateTimestamp
+// @Column(name = "update_date")
+// private LocalDate updateDate;
 
 @Enumerated(EnumType.STRING)
 private StudentStatus status;
+
+
 
 }

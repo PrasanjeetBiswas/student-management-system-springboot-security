@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.api.model.StudentModel;
 
-public interface Repository extends JpaRepository<StudentModel,Long>{
+public interface StudentRepository extends JpaRepository<StudentModel,Long>{
 
 List<StudentModel> findByName(String name);
 

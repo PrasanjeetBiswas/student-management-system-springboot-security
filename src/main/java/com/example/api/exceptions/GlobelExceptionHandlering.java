@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobelExceptionHandlering {
     
     @ExceptionHandler(StudentNotFoundException.class)
-    public ResponseEntity<ErrorResponce> handleStudentNotFound(StudentNotFoundException ex){
-        ErrorResponce error = new ErrorResponce();
+    public ResponseEntity<ErrorResponse> handleStudentNotFound(StudentNotFoundException ex){
+        ErrorResponse error = new ErrorResponse();
         error.setTimeStamp(LocalDateTime.now());
         error.setStatus(404);
         error.setMessage(ex.getMessage());
@@ -36,9 +36,19 @@ public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex){
 }
 
 @ExceptionHandler(DuplicatePhoneException.class)
-public ResponseEntity<ErrorResponce> handleDuplicatePhone(DuplicatePhoneException ex){
-    ErrorResponce error = new ErrorResponce();
+public ResponseEntity<ErrorResponse> handleDuplicatePhone(DuplicatePhoneException ex){
+    ErrorResponse error = new ErrorResponse();
 
+    error.setTimeStamp(LocalDateTime.now());
+    error.setStatus(409);
+    error.setMessage(ex.getMessage());
+
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+}
+
+@ExceptionHandler(DuplicateEmailException.class)
+public ResponseEntity<ErrorResponse> handleDuplicateEmails(DuplicateEmailException ex){
+    ErrorResponse error = new ErrorResponse();
     error.setTimeStamp(LocalDateTime.now());
     error.setStatus(409);
     error.setMessage(ex.getMessage());

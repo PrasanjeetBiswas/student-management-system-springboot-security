@@ -21,6 +21,6 @@ public class ResStudentDto {
     private String name;
     private String course;
     private String batch;
-    private LocalDate date;
+    private LocalDate createDate;
     private StudentStatus status;
 }
