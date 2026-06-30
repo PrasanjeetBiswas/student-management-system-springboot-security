@@ -2,10 +2,9 @@ package com.example.api.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.api.dtos.ResponseDtos.ResStudentDto;
 import com.example.api.dtos.requestDtos.ReqStudentDto;
-import com.example.api.dtos.responceDtos.ResStudentDto;
-import com.example.api.model.StudentModel;
-import com.example.api.service.logService.LogService;
+import com.example.api.dtos.updateDtos.StudentUpdateDto;
 import com.example.api.service.serviceInterface.ServiceInterface;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,11 +13,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,71 +32,69 @@ import org.springframework.web.bind.annotation.PutMapping;
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/students")
 public class StudentController {
 
-    private final LogService logSer;
 
-    private final ServiceInterface ser;
+    private final ServiceInterface studentService;
     // private final Repository repo;
 
-    // StudentController(ServiceInterface ser) {
-    //     this.ser = ser;
+    // StudentController(studentServiceviceInterface studentService) {
+    //     this.studentService = studentService;
     // }
 
     @Operation(summary = "Add a new Student")
-    @PostMapping("/v1/addStudent")
-    public String postMethodName(@Valid @RequestBody ReqStudentDto dto) {
+    @PostMapping
+    public ResponseEntity<String> addStudent(@Valid @RequestBody ReqStudentDto dto) {
 
-        ser.addStudents(dto);
-
-        logSer.createLog(dto.getName());
-        return "New Student Added";
+        studentService.addStudents(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("New Student Added");
     }
 
     @Operation(summary = "View all students")
-    @GetMapping("/v1/viewAllStudents")
-    public List<ResStudentDto> getMethodName() {
-        return ser.veiwAllStudents();
+    @GetMapping
+    public List<ResStudentDto> getAllStudents() {
+        return studentService.viewAllStudents();
     }
 
     @Operation(summary = "Find student by name")
-    @GetMapping("/v1/name/{name}")
-    public List<ResStudentDto> getStudentByName(@PathVariable String name) {
-        return ser.findStudentByName(name);
+    @GetMapping("/name/{name}")
+    public List<ResStudentDto> findStudentWithName(@PathVariable String name) {
+        return studentService.findStudentByName(name);
     }
 
     @Operation(summary = "Find student by Id")
-    @GetMapping("/v1/id/{id}")
-    public ResStudentDto getStudentById(@PathVariable Long id) {
-        return ser.findStudentById(id);
+    @GetMapping("/{id}")
+    public ResStudentDto findStudentById(@PathVariable Long id) {
+        return studentService.findStudentById(id);
     }
 
-    @Operation(summary = "Update student with there student id")
-    @PutMapping("/v1/updateStudent/{id}")
-    public String putMethodName(@PathVariable Long id, @RequestBody StudentModel student) {
-
-        ser.updateStudent(id, student);
-
-        return "Student Has Been Updated";
+    @Operation(summary = "Update student by ID")
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateStudent(@PathVariable Long id,@Valid @RequestBody StudentUpdateDto student) {
+       
+        studentService.updateStudent(id, student);
+        
+        return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Hard Delete student with there student id")
-    @DeleteMapping("v1/delete/{id}")
-    public String deleteMethod(@PathVariable Long id) {
-        ser.deleteStudent(id);
-        return "Student Has Been Deleted";
+    @Operation(summary = "Delete Student By ID")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok("Student deleted successfully. ID: "+id);
     }
 
     @Operation(summary = "Find students according to course")
-    @GetMapping("v1/filterByCourse/{course}")
-    public List<ResStudentDto> getMethodName(@PathVariable String course) {
-        return ser.fliterByCourse(course);
+    @GetMapping("/course/{course}")
+    public List<ResStudentDto> filterByCourse(@PathVariable String course) {
+        return studentService.filterByCourse(course);
     }
 
     @Operation(summary="Find students according to batch")
-    @GetMapping("/v1/filterByBatch/{batch}")
-    public List<ResStudentDto> getMethodBatch(@PathVariable String batch) {
-        return ser.filterByBatch(batch);
+    @GetMapping("/batch/{batch}")
+    public List<ResStudentDto> filterByBatch(@PathVariable String batch) {
+        return studentService.filterByBatch(batch);
     }
 
 }

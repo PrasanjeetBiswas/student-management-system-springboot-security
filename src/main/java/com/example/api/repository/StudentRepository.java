@@ -17,4 +17,8 @@ List<StudentModel> findByBatch(String batch);
 boolean existsByNum(String num);
  
 boolean existsByEmail(String email);
+
+boolean existsByEmailAndIdNot(String email, Long id);
+
+boolean existsByNumAndIdNot(String num, Long id);
 }

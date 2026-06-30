@@ -1,4 +1,4 @@
-package com.example.api.dtos.responceDtos;
+package com.example.api.dtos.ResponseDtos;
 
 import java.time.LocalDate;
 
